@@ -24,7 +24,7 @@ int main(int argc, char **argv) {
   if(child_id) {
     printf("I am in the execee program. Bye now\n");
   } else {
-    execl(FORK_BIN, FORK_BIN ,child_argv, NULL);
+    execl(FORK_BIN, FORK_BIN ,child_argv, NULL); // note that the last parameter of execl must be NULL
   }
   return 0;
 }

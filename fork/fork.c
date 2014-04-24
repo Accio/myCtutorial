@@ -15,7 +15,7 @@ int main(int argc, char **argv) {
   else
     seconds = atoi(argv[1]);
 
-  printf("Here I am in the program! Seconds=%d\n", seconds);
+  printf("Here I am in the forkee program! Seconds=%d\n", seconds);
   
   child_id=fork();
   if(child_id) {

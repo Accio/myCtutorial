@@ -6,7 +6,7 @@
 int* allocate(int N) {
   int* ip=(int *)malloc(N*sizeof(int));
   if(ip==NULL)
-    // die
+    puts("bad memory allocation");// die
   return(ip);
 }
 
@@ -31,9 +31,14 @@ int main(int argc, char** argv) {
     myip[i]=i*2+1;
   }
  
-  for(i=0;i<6;++i)
-    myput(*myip++);
+  /* following commands will cause memory error since myip has changed */
+  //for(i=0;i<6;++i)
+  //  myput(*myip++);
+  //free(myip);
 
+  /* in contrast the following lines are fine since myip has not changed*/
+  for(i=0;i<6;++i)
+    myput(myip[i]);
   free(myip);
   return 0;
 }

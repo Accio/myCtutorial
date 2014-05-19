@@ -5,8 +5,10 @@
 
 int* allocate(int N) {
   int* ip=(int *)malloc(N*sizeof(int));
-  if(ip==NULL)
-    puts("bad memory allocation");// die
+  if(ip==NULL) {
+     perror("bad memory allocation in allocate");
+     exit(EXIT_FAILURE);
+  }
   return(ip);
 }
 

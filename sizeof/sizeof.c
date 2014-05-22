@@ -7,15 +7,19 @@ int arrayLength(const int* ptr) {
 }
 
 int main() {
-  int stat_ptr[5];
+  int Ndim=5;
+  printf("Ndim=%d\n", Ndim);
+
+  int stat_ptr[Ndim];
   int i=0;
-  for(i=0;i<5;i++)
+  for(i=0;i<Ndim;i++)
     stat_ptr[i]=i;
   printf("stat_ptr length (func)=%d\n", arrayLength(stat_ptr));
   printf("stat_ptr length (local, size(int))=%d\n", (int)(sizeof(stat_ptr)/sizeof(int)));
   printf("stat_ptr length (local, size([0]))=%d\n", (int)(sizeof(stat_ptr)/sizeof(stat_ptr[0])));
-  int *dyn_ptr=(int *) malloc(5*sizeof(int));
-  for(i=0;i<5;i++)
+
+  int *dyn_ptr=(int *) malloc(Ndim*sizeof(int));
+  for(i=0;i<Ndim;i++)
     dyn_ptr[i]=i;
   printf("dyn_ptr length (func)=%d\n", arrayLength(dyn_ptr));
   printf("dyn_ptr length (local, size(int))=%d\n", (int)(sizeof(dyn_ptr)/sizeof(int)));

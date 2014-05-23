@@ -1,5 +1,5 @@
-#ifndef RANK_H_
-#define RANK_H_
+#ifndef _STAT_RANK_H_
+#define _STAT_RANK_H_
 
 typedef struct {
   int index;
@@ -15,12 +15,14 @@ typedef struct {
 } ItemListStruct, *ItemList;
 
 int compareItem(const void* a, const void* b);
+int compareItemIndex(const void* a, const void* b);
 
 ItemList createItemList(const double* array, int len);
 void printItemList(const ItemList list);
+void sortRankItemList(ItemList list);
 void rankItemList(ItemList list);
 
 /* private */
 Item createItem(double, int);
 void destroyItem(Item it);
-#endif /* RANK_H_ */
+#endif /* _STAT_RANK_H_ */

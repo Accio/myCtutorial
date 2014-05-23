@@ -22,6 +22,14 @@ int compareItem (const void* a, const void* b) // dereference void pointer: *((T
   // const Item *bp=(Item*)b;
   //return ((*ap)->value-(*bp)->value);
   return ((*(Item*)a)->value-(*(Item*)b)->value);
+}
+
+int compareItemIndex (const void* a, const void* b) // dereference void pointer: *((T*)ptr)
+{
+  // const Item *ap=(Item*)a;
+  // const Item *bp=(Item*)b;
+  //return ((*ap)->value-(*bp)->value);
+  return ((*(Item*)a)->index-(*(Item*)b)->index);
 
 }
 
@@ -53,7 +61,8 @@ void printItemList(const ItemList list) {
 	   list->list[i]->rank);
 }
 
-void rankItemList(ItemList list) {
+/* sortRankItemList: first sort and gives rank */
+void sortRankItemList(ItemList list) {
   Item* ll=list->list;
   int len=list->len;
   int i, j, k;
@@ -89,3 +98,11 @@ void rankItemList(ItemList list) {
   list->ulen=ucount;
 }
 
+
+/* rankItemList: only rank, do not sort (the input sequence remain unchanged) */
+void rankItemList(ItemList list) {
+  sortRankItemList(list);
+  Item* ll=list->list;
+  int len=list->len;
+  qsort(ll, len, sizeof(Item), compareItemIndex);
+}

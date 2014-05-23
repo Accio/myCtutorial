@@ -13,8 +13,12 @@ void useItem() {
   puts("Before sorting");
   printItemList(ilist);
 
-  rankItemList(ilist);
+  sortRankItemList(ilist);
   puts("After sorting");
+  printItemList(ilist);
+
+  rankItemList(ilist);
+  puts("Only ranking, no sorting");
   printItemList(ilist);
 }
 

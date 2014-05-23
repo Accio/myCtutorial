@@ -14,9 +14,6 @@ typedef struct {
   int ulen;
 } *ItemList;
 
-Item createItem(double, int);
-void destroyItem(Item it);
-
 int compareItem(const void* a, const void* b);
 
 ItemList createItemList(const double* array, int len);

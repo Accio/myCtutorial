@@ -102,7 +102,7 @@ ItemList createItemList(const double* array, int len) {
 
 void printItemList(const ItemList list) {
   int i=0;
-  printf("==ItemList (Len=%d, UniqLen=%d)==\n",
+  printf("--ItemList (Len=%d, UniqLen=%d)--\n",
 	 list->len, list->ulen);
   for(i=0;i<list->len;i++)
     printf("ilist[%d]=%.2f, index=%d, rank=%.1f\n",

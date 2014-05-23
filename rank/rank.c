@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <stdlib.h>
 
 #include "rank.h"
@@ -24,8 +25,7 @@ int compareItem (const void* a, const void* b) // dereference void pointer: *((T
 
 }
 
-double values[]={2.5, 1.5, 3.5, 1.5 ,4.5 ,4.5, 7.5, 7.5, 0, 4.5, 4.5};
-int Ndim=11;
+
 
 ItemList createItemList(const double* array, int len) {
   int i;
@@ -87,19 +87,5 @@ void rankItemList(ItemList list) {
   }
   free(backup);
   list->ulen=ucount;
-}
-
-void useItem() {
-  int i;
-  puts("---------- Using Item ----------");
-
-  ItemList ilist=createItemList(values, Ndim);
-
-  puts("Before sorting");
-  printItemList(ilist);
-
-  rankItemList(ilist);
-  puts("After sorting");
-  printItemList(ilist);
 }
 

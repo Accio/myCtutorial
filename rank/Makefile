@@ -1,8 +1,8 @@
 all:rank
 
-rank:rank.c rank.h
-	$(CC) rank.c -o rank
+rank:rank.c rank.h rank-private.c rank-private.h
+	$(CC) rank.c rank-private.c -o rank
 
 clean:
-	rm -f core.* *~
+	rm -f core.* *~ *.o
 	rm -f rank

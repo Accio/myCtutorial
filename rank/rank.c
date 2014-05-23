@@ -1,43 +1,8 @@
-#include <stdlib.h>
+
 #include <stdio.h>
 
+#include "rank-private.h"
 #include "rank.h"
-
-
-// from the following two functions, it seems clear that Item can be seen as a synonym of ItemStruct*
-Item createItem(double value, int index) {
-  Item it=(Item)malloc(sizeof(ItemStruct)); // TAKE CARE: use sizeof(Item) here will produce bugs that are very difficult to debug
-  it->index=index;
-  it->value=value;
-  it->order=0;
-  it->rank=-1.0;
-  return(it);
-}
-
-ItemStruct createItemStruct(double value, int index) {
-  ItemStruct *it=(ItemStruct*)malloc(sizeof(ItemStruct));
-  it->index=index;
-  it->value=value;
-  it->order=0;
-  it->rank=-1.0;
-  return(*it);
-}
-
-void destroyItem(Item it) {
-  free(it);
-}
-
-void destroyItemStruct(ItemStruct *it) {
-  free(it);
-}
-
-// note how to write functions for Struct and StructPtr!
-int compareItemStruct (const void* a, const void* b)
-{
-  // equivalent
-  // return ((*(ItemStruct*)a).value-(*(ItemStruct*)b).value);
-  return (((ItemStruct*)a)->value-((ItemStruct*)b)->value);
-}
 
 int compareItem (const void* a, const void* b) // dereference void pointer: *((T*)ptr)
 {
@@ -48,43 +13,8 @@ int compareItem (const void* a, const void* b) // dereference void pointer: *((T
 
 }
 
-// apparently rankItem can be faster than rankItemStruct because it moves only pointers, but not the whole data structures
-void rankItemStruct(ItemStruct* items, int len) {
-  int i=0;
-  qsort(items, len, sizeof(ItemStruct), compareItemStruct);
-  for(i=0;i<len;++i)
-    (items[i].index)++;
-  
-}
-
-void rankItem(Item* items, int len) {
-  int i=0;
-  qsort(items, len, sizeof(Item), compareItem);
-  for(i=0;i<len;++i)
-    (items[i]->index)++;
-}
-
-static double values[]={2.5, 1.5, 3.5, 1.5 ,4.5 ,4.5, 7.5, 7.5, 0, 4.5, 4.5};
-static int Ndim=11;
-
-void useItemStruct() {
-  int i;
-  puts("---------- Using ItemStruct ----------");
-  ItemStruct *ilist=(ItemStruct*)malloc(Ndim*sizeof(ItemStruct));
-
-  puts("Before sorting");
-  for(i=0;i<Ndim;++i) {
-    ilist[i]=createItemStruct(values[i], i);
-    printf("ilist[%d]=%.2f, index=%d, rank=%.1f\n", 
-	   i, ilist[i].value, ilist[i].index, ilist[i].rank);
-  }
-  rankItemStruct(ilist, Ndim);
-  puts("After sorting");
-  for(i=0;i<Ndim;++i) {
-    printf("ilist[%d]=%.2f, order=%d, rank=%.1f\n", 
-	   i, ilist[i].value, ilist[i].index, ilist[i].rank);
-  }
-}
+double values[]={2.5, 1.5, 3.5, 1.5 ,4.5 ,4.5, 7.5, 7.5, 0, 4.5, 4.5};
+int Ndim=11;
 
 ItemList createItemList(const double* array, int len) {
   int i;

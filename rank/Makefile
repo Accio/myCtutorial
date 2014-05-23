@@ -1,7 +1,7 @@
 all:rank
 
-rank:rank.c rank.h rank-private.c rank-private.h
-	$(CC) rank.c rank-private.c -o rank
+rank:rank.c rank.h rank-main.c rank-learnStruct.c 
+	$(CC) rank.c rank-learnStruct.c rank-main.c -o rank
 
 clean:
 	rm -f core.* *~ *.o

@@ -1,16 +1,8 @@
 #include <stdlib.h>
-#include "rank-private.h"
 
-// from the following two functions, it seems clear that Item can be seen as a synonym of ItemStruct*
-Item createItem(double value, int index) {
-  Item it=(Item)malloc(sizeof(ItemStruct)); // TAKE CARE: use sizeof(Item) here will produce bugs that are very difficult to debug
-  it->index=index;
-  it->value=value;
-  it->order=0;
-  it->rank=-1.0;
-  return(it);
-}
+#include "rank.h"
 
+// from createItem with createItemStruct, it seems clear that Item can be seen as a synonym of ItemStruct*
 ItemStruct createItemStruct(double value, int index) {
   ItemStruct *it=(ItemStruct*)malloc(sizeof(ItemStruct));
   it->index=index;
@@ -18,10 +10,6 @@ ItemStruct createItemStruct(double value, int index) {
   it->order=0;
   it->rank=-1.0;
   return(*it);
-}
-
-void destroyItem(Item it) {
-  free(it);
 }
 
 void destroyItemStruct(ItemStruct *it) {

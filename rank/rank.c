@@ -1,8 +1,19 @@
+#include <stdlib.h>
 
-#include <stdio.h>
-
-#include "rank-private.h"
 #include "rank.h"
+
+Item createItem(double value, int index) {
+  Item it=(Item)malloc(sizeof(ItemStruct)); // TAKE CARE: use sizeof(Item) here will produce bugs that are very difficult to debug
+  it->index=index;
+  it->value=value;
+  it->order=0;
+  it->rank=-1.0;
+  return(it);
+}
+
+void destroyItem(Item it) {
+  free(it);
+}
 
 int compareItem (const void* a, const void* b) // dereference void pointer: *((T*)ptr)
 {
@@ -92,11 +103,3 @@ void useItem() {
   printItemList(ilist);
 }
 
-int main(int argc, char** argv) {
-  //useItemStruct();
-  useItem();
-  // puts("Information");
-  //printf("Size of Item:%d\n", sizeof(Item));
-  //printf("Size of ItemStruct:%d\n", sizeof(ItemStruct));
-  return(0);
-}

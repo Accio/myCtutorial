@@ -20,4 +20,7 @@ ItemList createItemList(const double* array, int len);
 void printItemList(const ItemList list);
 void rankItemList(ItemList list);
 
+/* private */
+Item createItem(double, int);
+void destroyItem(Item it);
 #endif /* RANK_H_ */

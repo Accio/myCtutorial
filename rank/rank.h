@@ -21,6 +21,7 @@ ItemList createItemList(const double* array, int len);
 void printItemList(const ItemList list);
 void sortRankItemList(ItemList list);
 void rankItemList(ItemList list);
+void sortItemList(ItemList list);
 
 /* private */
 Item createItem(double, int);

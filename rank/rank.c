@@ -106,3 +106,9 @@ void rankItemList(ItemList list) {
   int len=list->len;
   qsort(ll, len, sizeof(Item), compareItemIndex);
 }
+
+void sortItemList(ItemList list) {
+  Item* ll=list->list;
+  int len=list->len;
+  qsort(ll, len, sizeof(Item), compareItem);
+}

@@ -33,7 +33,7 @@ ItemList createItemList(const double* array, int len) {
   for(i=0;i<len;++i) {
     ilist[i]=createItem(array[i], i);
   }
-  ItemList res=(ItemList)malloc(sizeof(ItemList));
+  ItemList res=(ItemList)malloc(sizeof(ItemListStruct));
   res->list=ilist;
   res->len=len;
   res->ulen=-1;

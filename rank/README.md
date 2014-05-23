@@ -1,0 +1,1 @@
+Here we refer to the [statistical ranking] [http://en.wikipedia.org/wiki/Ranking] in C

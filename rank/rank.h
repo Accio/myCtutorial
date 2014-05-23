@@ -12,7 +12,7 @@ typedef struct {
   Item* list;
   int len;
   int ulen;
-} *ItemList;
+} ItemListStruct, *ItemList;
 
 int compareItem(const void* a, const void* b);
 

@@ -17,13 +17,15 @@ void useItem() {
   puts("Only sorting (ranked implicitly)");
   printItemList(ilist);
 
+  rankItemList(ilist);
+  puts("Only ranking (sorted implicitly)");
+  printItemList(ilist);
+
   sortRankItemList(ilist);
   puts("After sorting and ranking");
   printItemList(ilist);
 
-  rankItemList(ilist);
-  puts("Only ranking (sorted implicitly)");
-  printItemList(ilist);
+
 
 
 

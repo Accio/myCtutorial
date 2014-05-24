@@ -14,7 +14,7 @@ void useItem() {
   printItemList(ilist);
 
   sortItemList(ilist);
-  puts("Only sorting, no ranking");
+  puts("Only sorting (ranked implicitly)");
   printItemList(ilist);
 
   sortRankItemList(ilist);
@@ -24,6 +24,10 @@ void useItem() {
   rankItemList(ilist);
   puts("Only ranking (sorted implicitly)");
   printItemList(ilist);
+
+
+
+
 
 }
 

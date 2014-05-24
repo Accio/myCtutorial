@@ -63,6 +63,7 @@ void printItemList(const ItemList list) {
 
 /* sortRankItemList: first sort and gives rank */
 void sortRankItemList(ItemList list) {
+  if(isRanked(list)) return; // make sure that this function runs only once
   Item* ll=list->list;
   int len=list->len;
   int i, j, k;
@@ -77,7 +78,7 @@ void sortRankItemList(ItemList list) {
     j=i;
 #ifdef DEBUG
     if(j<len-1)
-      printf("i=%d, j=%d, ind1=%d, ind2=%d, val1=%.1f, val2=%.1f\n", 
+      printf("[DEBUG] i=%d, j=%d, ind1=%d, ind2=%d, val1=%.1f, val2=%.1f\n", 
 	     i, j, 
 	     ll[j]->index, ll[j+1]->index, 
 	     backup[ll[j]->index],
@@ -100,14 +101,19 @@ void sortRankItemList(ItemList list) {
 
 
 /* rankItemList: only rank, do not sort (the input sequence remain unchanged) */
+int isRanked(const ItemList list) {return(list->list[0]->rank>0);}
+
 void rankItemList(ItemList list) {
-  sortRankItemList(list);
+  if(!isRanked(list))
+    sortRankItemList(list);
   Item* ll=list->list;
   int len=list->len;
   qsort(ll, len, sizeof(Item), compareItemIndex);
 }
 
 void sortItemList(ItemList list) {
+  if(!isRanked(list))
+    sortRankItemList(list);
   Item* ll=list->list;
   int len=list->len;
   qsort(ll, len, sizeof(Item), compareItem);

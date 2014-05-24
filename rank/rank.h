@@ -14,6 +14,8 @@ typedef struct {
   int ulen;
 } ItemListStruct, *ItemList;
 
+int isRanked(const ItemList list);
+
 int compareItem(const void* a, const void* b);
 int compareItemIndex(const void* a, const void* b);
 

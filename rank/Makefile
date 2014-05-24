@@ -1,3 +1,6 @@
+
+DOXYGEN=doxygen
+
 all:rank
 
 rank:rank.c rank.h rank-main.c rank-learnStruct.c 
@@ -6,3 +9,5 @@ rank:rank.c rank.h rank-main.c rank-learnStruct.c
 clean:
 	rm -f core.* *~ *.o
 	rm -f rank
+
+.PHONY=doc clean

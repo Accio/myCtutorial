@@ -1,3 +1,9 @@
+/*! \file rank.c
+  \brief statistical ranking
+
+  Functions for statistical (fractional) ranking
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -117,9 +123,9 @@ void sortRankItemList(ItemList list) {
       ll[k]->rank=(i+j+2)/2.;
     ucount++;
   }
-  for(i=0;i<len;++i) {
-    (ll[i]->index)++; // index starts from 1
-  }
+  //for(i=0;i<len;++i) {
+  //  (ll[i]->index)++; // index starts from 1
+  //}
   free(backup);
   list->ulen=ucount;
 }
@@ -130,8 +136,7 @@ void sortRankItemList(ItemList list) {
  * The items in the list are sorted by input index
  */
 void rankItemList(ItemList list) {
-  if(!isRanked(list))
-    sortRankItemList(list);
+  sortRankItemList(list);
   Item* ll=list->list;
   int len=list->len;
   qsort(ll, len, sizeof(Item), compareItemIndex);
@@ -143,8 +148,7 @@ void rankItemList(ItemList list) {
  * The items in the list are sorted by ascending order of the values.
  */
 void sortItemList(ItemList list) {
-  if(!isRanked(list))
-    sortRankItemList(list);
+  sortRankItemList(list);
   Item* ll=list->list;
   int len=list->len;
   qsort(ll, len, sizeof(Item), compareItem);

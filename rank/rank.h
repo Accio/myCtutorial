@@ -4,7 +4,6 @@
 typedef struct {
   int index;
   double value;
-  int order;
   double rank;
 } ItemStruct, *Item;
 
@@ -13,8 +12,6 @@ typedef struct {
   int len;
   int ulen;
 } ItemListStruct, *ItemList;
-
-int isRanked(const ItemList list);
 
 int compareItem(const void* a, const void* b);
 int compareItemIndex(const void* a, const void* b);
@@ -28,4 +25,6 @@ void sortItemList(ItemList list);
 /* private */
 Item createItem(double, int);
 void destroyItem(Item it);
+int isRanked(const ItemList list);
+
 #endif /* _STAT_RANK_H_ */

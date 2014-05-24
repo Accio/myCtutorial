@@ -8,7 +8,6 @@ ItemStruct createItemStruct(double value, int index) {
   ItemStruct *it=(ItemStruct*)malloc(sizeof(ItemStruct));
   it->index=index;
   it->value=value;
-  it->order=0;
   it->rank=-1.0;
   return(*it);
 }

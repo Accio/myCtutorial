@@ -3,19 +3,27 @@
 
 #include "rank.h"
 
+/*! \brief Create a Item object
+ * 
+ * A item object holds a double value, its original index, and its rank.
+ *
+ * The rank is initialized with -1, and changed to a positive one (starting from 1) by sortRankItemList. This is used to check whether that function has been run or not, so please do not change the initial value of rank.
+ */
+
 Item createItem(double value, int index) {
   Item it=(Item)malloc(sizeof(ItemStruct)); // TAKE CARE: use sizeof(Item) here will produce bugs that are very difficult to debug
   it->index=index;
   it->value=value;
-  it->order=0;
   it->rank=-1.0;
   return(it);
 }
 
+/*! \brief destroy an item object */
 void destroyItem(Item it) {
   free(it);
 }
 
+/*! \brief compare item objects by value */
 int compareItem (const void* a, const void* b) // dereference void pointer: *((T*)ptr)
 {
   // const Item *ap=(Item*)a;
@@ -24,6 +32,7 @@ int compareItem (const void* a, const void* b) // dereference void pointer: *((T
   return ((*(Item*)a)->value-(*(Item*)b)->value);
 }
 
+/*! \brief compare item objects by input index */
 int compareItemIndex (const void* a, const void* b) // dereference void pointer: *((T*)ptr)
 {
   // const Item *ap=(Item*)a;
@@ -33,8 +42,10 @@ int compareItemIndex (const void* a, const void* b) // dereference void pointer:
 
 }
 
-
-
+/*! \brief create an ItemList object 
+ \param array: a double array
+ \param len: the length of the double array
+*/
 ItemList createItemList(const double* array, int len) {
   int i;
   Item *ilist=(Item*)malloc(len*sizeof(Item));
@@ -48,7 +59,8 @@ ItemList createItemList(const double* array, int len) {
   return(res);
 }
 
-
+/*! \brief print an ItemList object
+*/
 void printItemList(const ItemList list) {
   int i=0;
   printf("--ItemList (Len=%d, UniqLen=%d)--\n",
@@ -61,7 +73,20 @@ void printItemList(const ItemList list) {
 	   list->list[i]->rank);
 }
 
-/* sortRankItemList: first sort and gives rank */
+/*! \brief test whether the ItemList has been ranked 
+ *
+ * if sortRankItemList has been run, the value will be 1, otherwise 0.
+ */
+int isRanked(const ItemList list) {return(list->list[0]->rank>0);}
+
+/*! \brief: sort and gives rank to a ItemList
+ *
+ *  sortRankItemList sorts and gives statistical (fractional) rank to a ItemList.
+ * 
+ *  sortRankItemList runs once and only once (controlled by isRanked):
+ *  Once the ranks have been set (i.e. ranks>0), the function will exit
+ *  without doing anything.
+ */ 
 void sortRankItemList(ItemList list) {
   if(isRanked(list)) return; // make sure that this function runs only once
   Item* ll=list->list;
@@ -99,10 +124,11 @@ void sortRankItemList(ItemList list) {
   list->ulen=ucount;
 }
 
-
-/* rankItemList: only rank, do not sort (the input sequence remain unchanged) */
-int isRanked(const ItemList list) {return(list->list[0]->rank>0);}
-
+/*! \brief: rankItemList
+ * \param list An ItemList
+ * It calls sortRankItemList if the ItemList has not been ranked before
+ * The items in the list are sorted by input index
+ */
 void rankItemList(ItemList list) {
   if(!isRanked(list))
     sortRankItemList(list);
@@ -111,6 +137,11 @@ void rankItemList(ItemList list) {
   qsort(ll, len, sizeof(Item), compareItemIndex);
 }
 
+/*! \brief: sortItemList
+ * \param list An ItemList
+ * It calls sortRankItemList if the ItemList has not been ranked before
+ * The items in the list are sorted by ascending order of the values.
+ */
 void sortItemList(ItemList list) {
   if(!isRanked(list))
     sortRankItemList(list);

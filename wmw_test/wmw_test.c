@@ -74,14 +74,14 @@ void dArrayPrint(const dArray array) {
 typedef struct {
   double U; // U statistic
   double ltP; // lower tail P value
-  double utP; // higher tail P value
+  double gtP; // higher tail P value
 } wmwResStruct, *wmwRes;
 
 wmwRes wmwResCreate(double u, double ltp, double utp) {
   wmwRes res=(wmwRes)malloc(sizeof(wmwResStruct));
   res->U=u;
   res->ltP=ltp;
-  res->utP=utp;
+  res->gtP=utp;
   return(res);
 }
 
@@ -156,22 +156,40 @@ wmwRes wmwTest(const iArray index,
 #define EPSILON 1E-6
 #define qequal(x,y) abs((x)-(y))<EPSILON
 
-int main() {
+int main(int argc, char** argv) {
   time_t seed=time(NULL);
   srand(seed);
   int i;
-  int Nlen=1000;
-  int IndLen=100;
-  double cor=0;
+  int Nlen;
+  int IndLen;
+  double cor;
+
+  if(argc!=4) {
+    printf("usage: %s TOTAL_LENGTH VAR_LENTH COR\n",argv[0]);
+    return(-1);
+  }
+
+  Nlen=atoi(argv[1]);
+  IndLen=atoi(argv[2]);
+  cor=atof(argv[3]);
+
+  if(IndLen>Nlen || Nlen<0 || IndLen<0) {
+    puts("Error: TOTAL_LENGH must be no less than VAR_LENGTH, and both must be positive");
+    return(-2);
+  } else if (cor>1 | cor<0) {
+    puts("Error: COR must be between 0 and 1");
+    return(-3);
+  }
+
   dArray stats=dArrayCreate(Nlen);
-  iArray ranks=iArrayCreate(Nlen);
+  //iArray ranks=iArrayCreate(Nlen);
   wmwRes res;
   iArray myInd=iArrayCreate(IndLen);;
 
   for(i=0;i<Nlen;++i)
     stats->value[i]=rand() % Nlen + 1.25;
 
-  // It appears rank is very slow when Nlen is large (=40000). Why?
+  //It appears rank is very slow when Nlen is large (=40000). Why?
   //rank(stats, ranks);
 
 #ifdef DEBUG
@@ -184,10 +202,10 @@ int main() {
   for(i=0;i<IndLen;i++)
     myInd->value[i]=rand() % Nlen;
   res=wmwTest(myInd, stats, cor, 0);
-  printf("U=%.2f, ltP=%.4f, utP=%.4f\n",
-	 res->U, res->ltP, res->utP);
+  printf("U=%.2f, ltP=%.4f, gtP=%.4f\n",
+	 res->U, res->ltP, res->gtP);
 
   dArrayDestroy(stats);
-  iArrayDestroy(ranks);
+  //iArrayDestroy(ranks);
   return(0);
 }

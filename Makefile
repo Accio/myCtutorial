@@ -7,3 +7,5 @@ all:
 
 doc:Doxyfile
 	doxygen Doxyfile
+
+.PHONY=doc

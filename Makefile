@@ -4,8 +4,8 @@ all:
 	$(MAKE) -C fork
 	$(MAKE) -C malloc
 	$(MAKE) -C sizeof
-	$(MAKE) -C rank
-
+	$(MAKE) -C stat_rank
+	$(MAKE) -C wmw_test
 doc:
 	$(DOXYGEN) Doxyfile
 

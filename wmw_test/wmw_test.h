@@ -33,7 +33,7 @@ void wmwResDestroy(wmwRes res);
 inline double wmw_U(const wmwRes res) {return res->U;}
 inline double wmw_ltP(const wmwRes res) {return res->ltP;}
 inline double wmw_gtP(const wmwRes res) {return res->gtP;}
-wmwRes wmwTest(const iArray index, const dArray stat, const double cor, const int df);
+wmwRes wmwTest(const iArray index, const dArray stat, const double cor, const double df);
 
 # endif /* _WMW_TEST_H */
 

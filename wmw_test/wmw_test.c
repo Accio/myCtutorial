@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>
+#include <float.h>
 #include <math.h>
 
 #define MATHLIB_STANDALONE
@@ -84,7 +85,7 @@ void wmwResDestroy(wmwRes res) {
 wmwRes wmwTest(const iArray index,
 	       const dArray stat,
 	       const double cor,
-	       const int df) {
+	       const double df) {
   int i,j;
   int n=stat->len;
   int n1=index->len;
@@ -92,7 +93,7 @@ wmwRes wmwTest(const iArray index,
   double irsum=0; // sum of rank of index
   double U, mu, sigma2;
   double zlt, zut; // z lower/upper tail (normal distribution approximation)
-  double plt, put, tmp;
+  double plt, put;
   int ulen=0;
  
   DRankList list=createDRankList(stat->value, n);
@@ -138,16 +139,18 @@ wmwRes wmwTest(const iArray index,
   	 irsum, mu, n, n1, n2, sigma2, zlt, zut);
 #endif
 
-  pnorm_both(zut, &tmp, &plt, 1, 0); // upper tail p of upper-tail z 
-  pnorm_both(zlt, &put, &tmp, 0, 0); // lower tail p of lower-tail z
+  //pnorm_both(zut, &tmp, &plt, 1, 0); // upper tail p of upper-tail z 
+  //pnorm_both(zlt, &put, &tmp, 1, 0); // lower tail p of lower-tail z
+  plt = pt(zut, df, 0, 0);
+  put = pt(zlt, df, 1, 0);
 
   wmwRes res=wmwResCreate(U, plt, put);
   return(res);
 }
 
 int main(int argc, char** argv) {
-  time_t seed=time(NULL);
-  srand(seed);
+  //time_t seed=time(NULL);
+  //srand(seed);
   int i;
   int Nlen;
   int IndLen;
@@ -185,7 +188,7 @@ int main(int argc, char** argv) {
   printf("index:");
   iArrayPrint(myInd); 
 
-  res=wmwTest(myInd, stats, cor, 0);
+  res=wmwTest(myInd, stats, cor, DBL_MAX);
   printf("U=%.2f, ltP=%.4f, gtP=%.4f\n",
 	 wmw_U(res),wmw_ltP(res), wmw_gtP(res));
 

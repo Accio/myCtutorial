@@ -1,43 +1,43 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include "rank.h"
+#include "stat_rank.h"
 
-// from createItem with createItemStruct, it seems clear that Item can be seen as a synonym of ItemStruct*
-ItemStruct createItemStruct(double value, int index) {
-  ItemStruct *it=(ItemStruct*)malloc(sizeof(ItemStruct));
+// from createDRank with createDRankStruct, it seems clear that DRank can be seen as a synonym of DRankStruct*
+DRankStruct createDRankStruct(double value, int index) {
+  DRankStruct *it=(DRankStruct*)malloc(sizeof(DRankStruct));
   it->index=index;
   it->value=value;
   it->rank=-1.0;
   return(*it);
 }
 
-void destroyItemStruct(ItemStruct *it) {
+void destroyDRankStruct(DRankStruct *it) {
   free(it);
 }
 
 // note how to write functions for Struct and StructPtr!
-// compare this function with compareItem(const void* a, const void* b)
-int compareItemStruct (const void* a, const void* b)
+// compare this function with compareDRank(const void* a, const void* b)
+int compareDRankStruct (const void* a, const void* b)
 {
   // equivalent
-  // return ((*(ItemStruct*)a).value-(*(ItemStruct*)b).value);
-  return (((ItemStruct*)a)->value-((ItemStruct*)b)->value);
+  // return ((*(DRankStruct*)a).value-(*(DRankStruct*)b).value);
+  return (((DRankStruct*)a)->value-((DRankStruct*)b)->value);
 }
 
 
-// apparently rankItem can be faster than rankItemStruct because it moves only pointers, but not the whole data structures
-void rankItemStruct(ItemStruct* items, int len) {
+// apparently rankDRank can be faster than rankDRankStruct because it moves only pointers, but not the whole data structures
+void rankDRankStruct(DRankStruct* items, int len) {
   int i=0;
-  qsort(items, len, sizeof(ItemStruct), compareItemStruct);
+  qsort(items, len, sizeof(DRankStruct), compareDRankStruct);
   for(i=0;i<len;++i)
     (items[i].index)++;
   
 }
 
-void rankItem(Item* items, int len) {
+void rankDRank(DRank* items, int len) {
   int i=0;
-  qsort(items, len, sizeof(Item), compareItem);
+  qsort(items, len, sizeof(DRank), compareDRank);
   for(i=0;i<len;++i)
     (items[i]->index)++;
 }
@@ -45,18 +45,18 @@ void rankItem(Item* items, int len) {
 extern int Ndim; 
 extern double* values; 
 
-void useItemStruct() {
+void useDRankStruct() {
   int i;
-  puts("---------- Using ItemStruct ----------");
-  ItemStruct *ilist=(ItemStruct*)malloc(Ndim*sizeof(ItemStruct));
+  puts("---------- Using DRankStruct ----------");
+  DRankStruct *ilist=(DRankStruct*)malloc(Ndim*sizeof(DRankStruct));
 
   puts("Before sorting");
   for(i=0;i<Ndim;++i) {
-    ilist[i]=createItemStruct(values[i], i);
+    ilist[i]=createDRankStruct(values[i], i);
     printf("ilist[%d]=%.2f, index=%d, rank=%.1f\n", 
 	   i, ilist[i].value, ilist[i].index, ilist[i].rank);
   }
-  rankItemStruct(ilist, Ndim);
+  rankDRankStruct(ilist, Ndim);
   puts("After sorting");
   for(i=0;i<Ndim;++i) {
     printf("ilist[%d]=%.2f, order=%d, rank=%.1f\n", 

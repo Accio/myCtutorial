@@ -4,3 +4,6 @@ all:
 	$(MAKE) -C sizeof
 	$(MAKE) -C stat_rank
 	$(MAKE) -C wmw_test
+
+doc:Doxyfile
+	doxygen Doxyfile

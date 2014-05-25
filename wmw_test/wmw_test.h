@@ -1,5 +1,5 @@
-#ifndef _WMW_TEST_H
-#define _WMW_TEST_H
+#ifndef _WMW_TEST_H_
+#define _WMW_TEST_H_
 
 typedef struct  {
   size_t len;
@@ -35,5 +35,4 @@ inline double wmw_ltP(const wmwRes res) {return res->ltP;}
 inline double wmw_gtP(const wmwRes res) {return res->gtP;}
 wmwRes wmwTest(const iArray index, const dArray stat, const double cor, const double df);
 
-# endif /* _WMW_TEST_H */
-
+# endif /* _WMW_TEST_H_ */

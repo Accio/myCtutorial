@@ -1,3 +1,8 @@
+## rankSumTestWithCorrelation function from the limma package (version 3.18.13)
+
+## authors: Gordon Smyth and Di Wu
+## used under GPL(>=2) license. The function has been slihtly modified to allow reporting results
+
 rankSumTestWithCorrelation <- function (index, statistics, correlation = 0, df = Inf) 
 {
     n <- length(statistics)

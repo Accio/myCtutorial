@@ -1,3 +1,5 @@
+DOXYGEN=doxygen
+
 all:
 	$(MAKE) -C fork
 	$(MAKE) -C malloc
@@ -5,7 +7,7 @@ all:
 	$(MAKE) -C stat_rank
 	$(MAKE) -C wmw_test
 
-doc:Doxyfile
-	doxygen Doxyfile
+doc:
+	$(DOXYGEN) Doxyfile
 
 .PHONY=doc

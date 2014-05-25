@@ -55,6 +55,16 @@ dArray dArrayCreate(int n) {
   res->value=(double*)malloc(n*sizeof(double));
   return(res);
 }
+dArray dArrayCopy(const double* array, int len) {
+  int i;
+  dArray res=dArrayCreate(len);
+  for(i=0;i<len;i++) 
+    *(res->value++)=*(array++); 
+  return(res);
+}
+inline void dArraySetValue(dArray array, int index, double value) {array->value[index]=value;}
+inline double dArrayGetValue(const dArray array, int index) {return(array->value[index]);}
+
 void dArrayDestroy(dArray array) {
   array->len=0;
   free(array->value);
@@ -88,6 +98,10 @@ wmwRes wmwResCreate(double u, double ltp, double utp) {
 void wmwResDestroy(wmwRes res) {
   free(res);
 }
+
+inline double wmw_U(const wmwRes res) {return res->U;}
+inline double wmw_ltP(const wmwRes res) {return res->ltP;}
+inline double wmw_gtP(const wmwRes res) {return res->gtP;}
 
 wmwRes wmwTest(const iArray index,
 	       const dArray stat,
@@ -182,30 +196,24 @@ int main(int argc, char** argv) {
   }
 
   dArray stats=dArrayCreate(Nlen);
-  //iArray ranks=iArrayCreate(Nlen);
   wmwRes res;
   iArray myInd=iArrayCreate(IndLen);;
 
   for(i=0;i<Nlen;++i)
-    stats->value[i]=rand() % Nlen + 1.25;
+    dArraySetValue(stats, i, rand() % Nlen + 1.25);
 
-  //It appears rank is very slow when Nlen is large (=40000). Why?
-  //rank(stats, ranks);
-
-#ifdef DEBUG
-  //printf("Values: ");
-  //dArrayPrint(stats);
-  //printf("Ranks: ");
-  //iArrayPrint(ranks);
-#endif
-  
   for(i=0;i<IndLen;i++)
     myInd->value[i]=rand() % Nlen;
+
+  printf("stats:");
+  dArrayPrint(stats);
+  printf("index:");
+  iArrayPrint(myInd); 
+
   res=wmwTest(myInd, stats, cor, 0);
   printf("U=%.2f, ltP=%.4f, gtP=%.4f\n",
-	 res->U, res->ltP, res->gtP);
+	 wmw_U(res),wmw_ltP(res), wmw_gtP(res));
 
   dArrayDestroy(stats);
-  //iArrayDestroy(ranks);
   return(0);
 }

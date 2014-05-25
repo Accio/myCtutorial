@@ -147,8 +147,8 @@ wmwRes wmwTest(const iArray index,
       tbl[ncount++]=j-i+1;
     }
     for(i=0;i<ulen;++i)
-      prod+=tbl[i]*(tbl[i]+1)*(tbl[i]-1);
-    sigma2*=(1-prod/(n*(n+1)*(n-1)));
+      prod+=(0.0+tbl[i])/n*(tbl[i]+1)/(n+1)*(tbl[i]-1)/(n-1);
+    sigma2*=(1-prod);
     free(tbl);
   }
   zlt=(U+0.5-mu)/sqrt(sigma2);

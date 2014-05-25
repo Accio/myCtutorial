@@ -1,5 +1,6 @@
 DOXYGEN=doxygen
 
+.PHONY=doc
 all:
 	$(MAKE) -C fork
 	$(MAKE) -C malloc
@@ -10,4 +11,3 @@ all:
 doc:
 	$(DOXYGEN) Doxyfile
 
-.PHONY=doc

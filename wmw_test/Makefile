@@ -9,7 +9,7 @@ RMATH_LIB_DIR=${RMATH_HOME}/lib
 RANKDIR=../stat_rank/
 CFLAGSL = $(CFLAGS) -I${RMATH_INC_DIR} -L${RMATH_LIB_DIR} -I${RANKDIR}
 
-wmw_test:wmw_test.c ${RANKDIR}/stat_rank.h
+wmw_test:wmw_test.c wmw_test.h ${RANKDIR}/stat_rank.h
 	$(CC) -Wl,-rpath ${RMATH_LIB_DIR} ${CFLAGSL} ${RANKDIR}/stat_rank.c  wmw_test.c -o wmw_test -lRmath -lm  
 
 clean:

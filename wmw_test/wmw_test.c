@@ -7,12 +7,7 @@
 #include <Rmath.h>
 
 #include "stat_rank.h"
-
-// Implementation follows limma::rankSumTestWithCorrelation
-typedef struct  {
-  size_t len;
-  int* value;
-} intArrayStruct, *iArray;
+#include "wmw_test.h"
 
 iArray iArrayCreate(int n) {
   iArray res=(iArray)malloc(sizeof(intArrayStruct));
@@ -44,11 +39,6 @@ void iArrayPrint(const iArray array) {
   puts("");
 }
 
-typedef struct {
-  size_t len;
-  double* value;
-} doubleArrayStruct , *dArray;
-
 dArray dArrayCreate(int n) {
   dArray res=(dArray)malloc(sizeof(doubleArrayStruct));
   res->len=n;
@@ -62,8 +52,6 @@ dArray dArrayCopy(const double* array, int len) {
     *(res->value++)=*(array++); 
   return(res);
 }
-inline void dArraySetValue(dArray array, int index, double value) {array->value[index]=value;}
-inline double dArrayGetValue(const dArray array, int index) {return(array->value[index]);}
 
 void dArrayDestroy(dArray array) {
   array->len=0;
@@ -81,12 +69,6 @@ void dArrayPrint(const dArray array) {
   puts("");
 }
 
-typedef struct {
-  double U; // U statistic
-  double ltP; // lower tail P value
-  double gtP; // higher tail P value
-} wmwResStruct, *wmwRes;
-
 wmwRes wmwResCreate(double u, double ltp, double utp) {
   wmwRes res=(wmwRes)malloc(sizeof(wmwResStruct));
   res->U=u;
@@ -98,10 +80,6 @@ wmwRes wmwResCreate(double u, double ltp, double utp) {
 void wmwResDestroy(wmwRes res) {
   free(res);
 }
-
-inline double wmw_U(const wmwRes res) {return res->U;}
-inline double wmw_ltP(const wmwRes res) {return res->ltP;}
-inline double wmw_gtP(const wmwRes res) {return res->gtP;}
 
 wmwRes wmwTest(const iArray index,
 	       const dArray stat,
@@ -166,9 +144,6 @@ wmwRes wmwTest(const iArray index,
   wmwRes res=wmwResCreate(U, plt, put);
   return(res);
 }
-
-#define EPSILON 1E-6
-#define qequal(x,y) abs((x)-(y))<EPSILON
 
 int main(int argc, char** argv) {
   time_t seed=time(NULL);

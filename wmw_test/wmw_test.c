@@ -6,7 +6,7 @@
 #define MATHLIB_STANDALONE
 #include <Rmath.h>
 
-#include "rank.h"
+#include "stat_rank.h"
 
 // Implementation follows limma::rankSumTestWithCorrelation
 typedef struct  {
@@ -120,9 +120,9 @@ wmwRes wmwTest(const iArray index,
   double plt, put, tmp;
   int ulen=0;
  
-  ItemList list=createItemList(stat->value, n);
+  DRankList list=createDRankList(stat->value, n);
 
-  rankItemList(list);
+  rankDRankList(list);
 
   // sum of the ranks of indexed elements
   for(i=0;i<n1;++i)
@@ -143,7 +143,7 @@ wmwRes wmwTest(const iArray index,
     int* tbl=(int*)malloc(ulen * sizeof(int));
     int ncount=0;
     double prod=0;
-    sortItemList(list);
+    sortDRankList(list);
     for(i=0;i<n;i=j+1) {
       j=i;
       while(j<n-1 && (list->list[j+1]->value==list->list[j]->value)) ++j;

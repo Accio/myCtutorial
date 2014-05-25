@@ -6,11 +6,11 @@ RMATH_HOME=$(BIOSEXTLIBLOC)/Rmath
 RMATH_INC_DIR=${RMATH_HOME}/include
 RMATH_LIB_DIR=${RMATH_HOME}/lib
 
-RANKDIR=../rank/
+RANKDIR=../stat_rank/
 CFLAGSL = $(CFLAGS) -I${RMATH_INC_DIR} -L${RMATH_LIB_DIR} -I${RANKDIR}
 
-wmw_test:wmw_test.c ${RANKDIR}/rank.h
-	$(CC) -Wl,-rpath ${RMATH_LIB_DIR} ${CFLAGSL} ${RANKDIR}/rank.c  wmw_test.c -o wmw_test -lRmath -lm  
+wmw_test:wmw_test.c ${RANKDIR}/stat_rank.h
+	$(CC) -Wl,-rpath ${RMATH_LIB_DIR} ${CFLAGSL} ${RANKDIR}/stat_rank.c  wmw_test.c -o wmw_test -lRmath -lm  
 
 clean:
 	rm -f *.o *.so core.* *~

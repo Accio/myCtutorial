@@ -1,4 +1,4 @@
-/*! \file rank.h
+/*! \file stat_rank.h
     \brief Header for statistical ranking
     
     Details.

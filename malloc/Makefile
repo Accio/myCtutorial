@@ -1,4 +1,4 @@
-all: malloc.exe
+all: malloc
 
-malloc.exe:malloc.c
-	$(CC) malloc.c -o malloc.exe
+malloc:malloc.c
+	$(CC) malloc.c -o malloc

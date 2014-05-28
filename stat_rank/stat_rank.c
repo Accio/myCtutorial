@@ -30,12 +30,16 @@ void destroyDRank(DRank it) {
 }
 
 /*! \brief compare item objects by value */
+// it took very long to debug in R if the return value was not integer but double. Take care!
 int compareDRank (const void* a, const void* b) // dereference void pointer: *((T*)ptr)
 {
-  // const DRank *ap=(DRank*)a;
-  // const DRank *bp=(DRank*)b;
-  //return ((*ap)->value-(*bp)->value);
-  return ((*(DRank*)a)->value-(*(DRank*)b)->value);
+  if((*(DRank*)a)->value > (*(DRank*)b)->value) {
+     return 1;
+  } else if((*(DRank*)a)->value < (*(DRank*)b)->value) {
+     return -1;
+  } else {
+     return 0;
+  }
 }
 
 /*! \brief compare item objects by input index */

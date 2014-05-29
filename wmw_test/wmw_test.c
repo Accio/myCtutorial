@@ -140,7 +140,7 @@ wmwRes wmwTest(const iArray index,
 #endif
 
   //pnorm_both(zut, &tmp, &plt, 1, 0); // upper tail p of upper-tail z 
-  //pnorm_both(zlt, &put, &tmp, 1, 0); // lower tail p of lower-tail z
+  //pnorm_both(zlt, &put, &tmp, 0, 0); // lower tail p of lower-tail z
   plt = pt(zut, df, 0, 0);
   put = pt(zlt, df, 1, 0);
 

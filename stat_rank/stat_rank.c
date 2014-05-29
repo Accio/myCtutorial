@@ -146,7 +146,7 @@ void rankDRankList(DRankList list) {
   qsort(ll, len, sizeof(DRank), compareDRankIndex);
 }
 
-/*! \brief: sortDRankList
+/*! \brief sortDRankList
  * \param list An DRankList
  * It calls sortRankDRankList if the DRankList has not been ranked before
  * The items in the list are sorted by ascending order of the values.
@@ -156,4 +156,13 @@ void sortDRankList(DRankList list) {
   DRank* ll=list->list;
   int len=list->len;
   qsort(ll, len, sizeof(DRank), compareDRank);
+}
+
+/*! \brief destroyDRankList */
+void destroyDRankList(DRankList list) {
+  int i;
+  for(i=0; i<list->len;i++)
+    destroyDRank(list->list[i]);
+  free(list->list);
+  free(list);
 }

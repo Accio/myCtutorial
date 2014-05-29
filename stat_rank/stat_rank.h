@@ -47,6 +47,8 @@ void sortRankDRankList(DRankList list);
 void rankDRankList(DRankList list);
 /*! \brief sort the DRankList */
 void sortDRankList(DRankList list);
+/*! \brief destroy the DRankList */
+void destroyDRankList(DRankList list);
 
 /* private */
 DRank createDRank(double, int);

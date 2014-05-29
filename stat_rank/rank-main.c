@@ -25,12 +25,7 @@ void useDRank() {
   puts("After sorting and ranking");
   printDRankList(ilist);
 
-
-
-
-
-
-
+  destroyDRankList(ilist);
 }
 
 

@@ -27,12 +27,16 @@ typedef struct {
   double U; // U statistic
   double ltP; // lower tail P value
   double gtP; // higher tail P value
+  double tsP; // two-side p-value
 } wmwResStruct, *wmwRes;
-wmwRes wmwResCreate(double u, double ltp, double utp);
+wmwRes wmwResCreate(double u, double ltp, double utp, double tsP);
 void wmwResDestroy(wmwRes res);
 inline double wmw_U(const wmwRes res) {return res->U;}
 inline double wmw_ltP(const wmwRes res) {return res->ltP;}
 inline double wmw_gtP(const wmwRes res) {return res->gtP;}
+inline double wmw_tsP(const wmwRes res) {return res->tsP;}
+
 wmwRes wmwTest(const iArray index, const dArray stat, const double cor, const double df);
 
+#define MIN(x,y) ((x) > (y) ? (y) : (x));
 # endif /* _WMW_TEST_H_ */

@@ -4,7 +4,9 @@
 #include <float.h>
 #include <math.h>
 
-#define MATHLIB_STANDALONE
+#ifdef RMATH_STANDALONEO
+  #define MATHLIB_STANDALONE
+#endif
 #include <Rmath.h>
 
 #include "stat_rank.h"
@@ -70,11 +72,12 @@ void dArrayPrint(const dArray array) {
   puts("");
 }
 
-wmwRes wmwResCreate(double u, double ltp, double utp) {
+wmwRes wmwResCreate(double u, double ltp, double utp, double tsp) {
   wmwRes res=(wmwRes)malloc(sizeof(wmwResStruct));
   res->U=u;
   res->ltP=ltp;
   res->gtP=utp;
+  res->tsP=tsp;
   return(res);
 }
 
@@ -92,8 +95,8 @@ wmwRes wmwTest(const iArray index,
   int n2=n-n1;
   double irsum=0; // sum of rank of index
   double U, mu, sigma2;
-  double zlt, zut; // z lower/upper tail (normal distribution approximation)
-  double plt, put;
+  double zlt, zut, zts; // z lower/upper tail (normal distribution approximation)
+  double plt, put, pts;
   int ulen=0;
  
   DRankList list=createDRankList(stat->value, n);
@@ -132,7 +135,8 @@ wmwRes wmwTest(const iArray index,
   }
   zlt=(U+0.5-mu)/sqrt(sigma2);
   zut=(U-0.5-mu)/sqrt(sigma2);
-  
+  zts=(U-mu-(U>mu ? 0.5 : -0.5))/sqrt(sigma2);
+ 
 #ifdef WMWDEBUG
   printf("sum(r1)=%f, mu=%f, n=%d, n1=%d, n2=%d, sigma=%2.3f\n"
 	 "zlt=%f, zut=%f\n",
@@ -143,8 +147,9 @@ wmwRes wmwTest(const iArray index,
   //pnorm_both(zlt, &put, &tmp, 1, 0); // lower tail p of lower-tail z
   plt = pt(zut, df, 0, 0);
   put = pt(zlt, df, 1, 0);
-
-  wmwRes res=wmwResCreate(U, plt, put);
+  pts = 2.0*MIN(pt(zts, df,0,0),
+		pt(zts, df, 1, 0));
+  wmwRes res=wmwResCreate(U, plt, put, pts);
   return(res);
 }
 
@@ -189,8 +194,8 @@ int main(int argc, char** argv) {
   iArrayPrint(myInd); 
 
   res=wmwTest(myInd, stats, cor, DBL_MAX);
-  printf("U=%.2f, ltP=%.4f, gtP=%.4f\n",
-	 wmw_U(res),wmw_ltP(res), wmw_gtP(res));
+  printf("U=%.2f, ltP=%.4f, gtP=%.4f, tsP=%.4f\n",
+	 wmw_U(res),wmw_ltP(res), wmw_gtP(res), wmw_tsP(res));
 
   dArrayDestroy(stats);
   return(0);

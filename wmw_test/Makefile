@@ -1,4 +1,5 @@
-ifdef BIOINFOCONFDIR
+HOST=`hostname`
+ifeq ($(HOST), montale.bas.roche.com)
   include $(BIOINFOCONFDIR)/prpidefs.make
   RMATH_HOME=$(BIOSEXTLIBLOC)/Rmath
 

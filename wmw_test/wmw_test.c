@@ -1,18 +1,16 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>
+#include <float.h>
 #include <math.h>
 
-#define MATHLIB_STANDALONE
+#ifdef RMATH_STANDALONEO
+  #define MATHLIB_STANDALONE
+#endif
 #include <Rmath.h>
 
 #include "stat_rank.h"
-
-// Implementation follows limma::rankSumTestWithCorrelation
-typedef struct  {
-  size_t len;
-  int* value;
-} intArrayStruct, *iArray;
+#include "wmw_test.h"
 
 iArray iArrayCreate(int n) {
   iArray res=(iArray)malloc(sizeof(intArrayStruct));
@@ -44,11 +42,6 @@ void iArrayPrint(const iArray array) {
   puts("");
 }
 
-typedef struct {
-  size_t len;
-  double* value;
-} doubleArrayStruct , *dArray;
-
 dArray dArrayCreate(int n) {
   dArray res=(dArray)malloc(sizeof(doubleArrayStruct));
   res->len=n;
@@ -62,8 +55,6 @@ dArray dArrayCopy(const double* array, int len) {
     *(res->value++)=*(array++); 
   return(res);
 }
-inline void dArraySetValue(dArray array, int index, double value) {array->value[index]=value;}
-inline double dArrayGetValue(const dArray array, int index) {return(array->value[index]);}
 
 void dArrayDestroy(dArray array) {
   array->len=0;
@@ -81,17 +72,12 @@ void dArrayPrint(const dArray array) {
   puts("");
 }
 
-typedef struct {
-  double U; // U statistic
-  double ltP; // lower tail P value
-  double gtP; // higher tail P value
-} wmwResStruct, *wmwRes;
-
-wmwRes wmwResCreate(double u, double ltp, double utp) {
+wmwRes wmwResCreate(double u, double ltp, double utp, double tsp) {
   wmwRes res=(wmwRes)malloc(sizeof(wmwResStruct));
   res->U=u;
   res->ltP=ltp;
   res->gtP=utp;
+  res->tsP=tsp;
   return(res);
 }
 
@@ -99,22 +85,18 @@ void wmwResDestroy(wmwRes res) {
   free(res);
 }
 
-inline double wmw_U(const wmwRes res) {return res->U;}
-inline double wmw_ltP(const wmwRes res) {return res->ltP;}
-inline double wmw_gtP(const wmwRes res) {return res->gtP;}
-
 wmwRes wmwTest(const iArray index,
 	       const dArray stat,
 	       const double cor,
-	       const int df) {
+	       const double df) {
   int i,j;
   int n=stat->len;
   int n1=index->len;
   int n2=n-n1;
   double irsum=0; // sum of rank of index
   double U, mu, sigma2;
-  double zlt, zut; // z lower/upper tail (normal distribution approximation)
-  double plt, put, tmp;
+  double zlt, zut, zts; // z lower/upper tail (normal distribution approximation)
+  double plt, put, pts;
   int ulen=0;
  
   DRankList list=createDRankList(stat->value, n);
@@ -153,26 +135,27 @@ wmwRes wmwTest(const iArray index,
   }
   zlt=(U+0.5-mu)/sqrt(sigma2);
   zut=(U-0.5-mu)/sqrt(sigma2);
-  
+  zts=(U-mu-(U>mu ? 0.5 : -0.5))/sqrt(sigma2);
+ 
 #ifdef WMWDEBUG
   printf("sum(r1)=%f, mu=%f, n=%d, n1=%d, n2=%d, sigma=%2.3f\n"
 	 "zlt=%f, zut=%f\n",
   	 irsum, mu, n, n1, n2, sigma2, zlt, zut);
 #endif
 
-  pnorm_both(zut, &tmp, &plt, 1, 0); // upper tail p of upper-tail z 
-  pnorm_both(zlt, &put, &tmp, 0, 0); // lower tail p of lower-tail z
-
-  wmwRes res=wmwResCreate(U, plt, put);
+  //pnorm_both(zut, &tmp, &plt, 1, 0); // upper tail p of upper-tail z 
+  //pnorm_both(zlt, &put, &tmp, 0, 0); // lower tail p of lower-tail z
+  plt = pt(zut, df, 0, 0);
+  put = pt(zlt, df, 1, 0);
+  pts = 2.0*MIN(pt(zts, df,0,0),
+		pt(zts, df, 1, 0));
+  wmwRes res=wmwResCreate(U, plt, put, pts);
   return(res);
 }
 
-#define EPSILON 1E-6
-#define qequal(x,y) abs((x)-(y))<EPSILON
-
 int main(int argc, char** argv) {
-  time_t seed=time(NULL);
-  srand(seed);
+  //time_t seed=time(NULL);
+  //srand(seed);
   int i;
   int Nlen;
   int IndLen;
@@ -210,9 +193,9 @@ int main(int argc, char** argv) {
   printf("index:");
   iArrayPrint(myInd); 
 
-  res=wmwTest(myInd, stats, cor, 0);
-  printf("U=%.2f, ltP=%.4f, gtP=%.4f\n",
-	 wmw_U(res),wmw_ltP(res), wmw_gtP(res));
+  res=wmwTest(myInd, stats, cor, DBL_MAX);
+  printf("U=%.2f, ltP=%.4f, gtP=%.4f, tsP=%.4f\n",
+	 wmw_U(res),wmw_ltP(res), wmw_gtP(res), wmw_tsP(res));
 
   dArrayDestroy(stats);
   return(0);
